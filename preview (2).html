@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuizForge | Quiz Creator & Fact Checker</title>
+
+<style>
+:root {
+  --blue: #1677ff;
+  --blue-dark: #0955c9;
+  --background: #080b12;
+  --panel: #111722;
+  --panel-light: #192231;
+  --border: #29364a;
+  --text: #f3f6fc;
+  --muted: #9aa9bd;
+  --green: #28c984;
+  --red: #ff5b68;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+header {
+  background: linear-gradient(110deg, #0865e9, #168bff);
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 25px #0006;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: #cfe6ff;
+}
+
+header p {
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: #e0edff;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+button, .nav-button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+button:hover, .nav-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+}
+
+.nav-button {
+  background: #ffffff1b;
+  color: white;
+}
+
+.nav-button.active {
+  background: white;
+  color: #0759c7;
+}
+
+.primary {
+  background: var(--blue);
+  color: white;
+}
+
+.secondary {
+  background: var(--panel-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.danger {
+  background: #49202a;
+  color: #ff9da6;
+}
+
+.success {
+  background: #153e32;
+  color: #7ce8b9;
+}
+
+main {
+  max-width: 1250px;
+  margin: auto;
+  padding: 30px 22px 60px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.hero {
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 4vw, 39px);
+  margin: 0 0 8px;
+}
+
+.hero p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 25px 0 30px;
+}
+
+.stat, .panel, .quiz-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 20px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  margin-top: 5px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 16px;
+}
+
+.quiz-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quiz-card h3 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.quiz-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.quiz-meta {
+  color: #82b8ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.card-actions button {
+  flex: 1;
+}
+
+.panel {
+  margin-bottom: 20px;
+}
+
+.panel h2, .panel h3 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c9d5e6;
+  margin-bottom: 7px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #090e17;
+  color: var(--text);
+  font: inherit;
+  margin-bottom: 16px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #1677ff80;
+  border-color: var(--blue);
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.question-editor {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 18px 0;
+  background: #0c121c;
+}
+
+.question-editor h3 {
+  margin-bottom: 15px;
+}
+
+.option-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.help {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.quiz-question {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.quiz-question:last-child {
+  border-bottom: none;
+}
+
+.quiz-question h3 {
+  font-size: 17px;
+  margin: 0 0 14px;
+}
+
+.answer-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: #0b111b;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.answer-option:hover {
+  border-color: var(--blue);
+}
+
+.answer-option input {
+  width: auto;
+  margin: 4px 0 0;
+}
+
+.result {
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  background: #102b25;
+  border: 1px solid #23674e;
+}
+
+.result h2 {
+  color: var(--green);
+  margin-top: 0;
+}
+
+.feedback {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.feedback.correct {
+  color: var(--green);
+}
+
+.feedback.incorrect {
+  color: #ff9da6;
+}
+
+.notice {
+  border-left: 4px solid var(--blue);
+  padding: 12px 15px;
+  background: #102039;
+  border-radius: 0 8px 8px 0;
+  color: #c9dcfa;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--panel-light);
+  color: #d3e4ff;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.empty-state {
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 650px) {
+  header {
+    padding: 18px;
+  }
+
+  main {
+    padding: 22px 14px 40px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row, .option-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  nav {
+    width: 100%;
+  }
+
+  .nav-button {
+    flex: 1;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="logo">Quiz<span>Forge</span></div>
+    <p>Create quizzes. Test knowledge. Check claims.</p>
+  </div>
+
+  <nav>
+    <button class="nav-button active" data-page="dashboard">Dashboard</button>
+    <button class="nav-button" data-page="creator">Create Quiz</button>
+    <button class="nav-button" data-page="factcheck">Fact Checker</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page active">
+    <div class="hero">
+      <h1>Your learning workspace</h1>
+      <p>Create multiple-choice quizzes, practise your knowledge, and review information.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">Saved quizzes</span>
+        <span class="stat-number" id="quizCount">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Total questions</span>
+        <span class="stat-number" id="questionCount">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Quizzes completed</span>
+        <span class="stat-number" id="completedCount">0</span>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <h2>Your quizzes</h2>
+      <button class="primary" onclick="startNewQuiz()">+ Create Quiz</button>
+    </div>
+
+    <div id="quizGrid" class="quiz-grid"></div>
+  </section>
+
+  <!-- QUIZ CREATOR -->
+  <section id="creator" class="page">
+    <div class="hero">
+      <h1>Create a quiz</h1>
+      <p>Build your own multiple-choice test with answers and explanations.</p>
+    </div>
+
+    <div class="panel">
+      <form id="quizForm">
+        <label for="quizTitle">Quiz title</label>
+        <input id="quizTitle" required maxlength="100"
+               placeholder="Example: Grade 12 Atomic Structure">
+
+        <label for="quizDescription">Description</label>
+        <textarea id="quizDescription" maxlength="500"
+                  placeholder="What is this quiz about?"></textarea>
+
+        <div class="section-heading">
+          <h2>Questions</h2>
+          <button type="button" class="secondary" onclick="addQuestion()">
+            + Add Question
+          </button>
+        </div>
+
+        <p class="help">
+          Each question needs four answer choices and one correct answer.
+        </p>
+
+        <div id="questionEditors"></div>
+
+        <div class="button-row">
+          <button type="submit" class="primary">Save Quiz</button>
+          <button type="button" class="secondary" onclick="showPage('dashboard')">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- QUIZ TAKING -->
+  <section id="taking" class="page">
+    <div class="hero">
+      <h1 id="takingTitle">Take a quiz</h1>
+      <p id="takingDescription"></p>
+    </div>
+
+    <div class="panel">
+      <div id="quizInstructions" class="notice">
+        Select one answer for each question, then submit your answers.
+      </div>
+
+      <form id="takingForm">
+        <div id="quizQuestions"></div>
+        <button type="submit" class="primary">Submit Answers</button>
+      </form>
+
+      <div id="quizResult" hidden></div>
+
+      <div class="button-row" style="margin-top: 18px;">
+        <button class="secondary" onclick="showPage('dashboard')">
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FACT CHECKER -->
+  <section id="factcheck" class="page">
+    <div class="hero">
+      <h1>Fact-check workspace</h1>
+      <p>Organize claims, record sources, and assess the available evidence.</p>
+    </div>
+
+    <div class="notice">
+      This standalone version does not automatically search the internet or verify
+      claims. Use reliable sources to investigate a claim, then record your evidence
+      and assessment below. A live automated fact-checking service requires a
+      connected API or backend.
+    </div>
+
+    <div class="panel">
+      <h2>Investigate a claim</h2>
+
+      <form id="factForm">
+        <label for="claim">Claim to investigate</label>
+        <textarea id="claim" required maxlength="2000"
+          placeholder="Enter the statement you want to check..."></textarea>
+
+        <label for="evidence">Evidence and notes</label>
+        <textarea id="evidence" maxlength="5000"
+          placeholder="Summarize what your sources say. Note dates, context, and disagreements."></textarea>
+
+        <label for="sourceUrl">Source URL</label>
+        <input id="sourceUrl" type="url"
+          placeholder="https://example.com/article">
+
+        <label for="assessment">Your assessment</label>
+        <select id="assessment">
+          <option value="Unverified">Not yet verified</option>
+          <option value="Supported">Supported by the evidence</option>
+          <option value="Contradicted">Contradicted by the evidence</option>
+          <option value="Mixed">Mixed or incomplete evidence</option>
+        </select>
+
+        <div class="button-row">
+          <button type="submit" class="primary">Generate Report</button>
+          <button type="button" class="secondary" onclick="clearFactCheck()">
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="factReportPanel" class="panel" hidden>
+      <div class="section-heading">
+        <h2>Fact-check report</h2>
+        <button class="secondary" onclick="copyReport()">Copy Report</button>
+      </div>
+      <div id="factReport"></div>
+      <textarea id="reportText" readonly hidden></textarea>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  QuizForge — Your personal quiz and research workspace.
+  Quizzes are stored locally in this browser.
+</footer>
+
+<script>
+"use strict";
+
+const STORAGE_KEY = "quizforge_quizzes_v1";
+const COMPLETED_KEY = "quizforge_completed_v1";
+
+let quizzes = loadQuizzes();
+let completedCount = loadCompleted();
+let editingQuestions = 0;
+let currentQuizId = null;
+
+function loadQuizzes() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    return Array.isArray(stored) ? stored : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function loadCompleted() {
+  try {
+    return Number(localStorage.getItem(COMPLETED_KEY)) || 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+function saveQuizzes() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(quizzes));
+    localStorage.setItem(COMPLETED_KEY, String(completedCount));
+  } catch (error) {
+    alert("Your browser could not save the data. Check your browser storage settings.");
+  }
+}
+
+function makeId() {
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2, 9);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page.id === pageId);
+  });
+
+  document.querySelectorAll(".nav-button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === pageId);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".nav-button").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
+});
+
+function updateDashboard() {
+  document.getElementById("quizCount").textContent = quizzes.length;
+
+  document.getElementById("questionCount").textContent =
+    quizzes.reduce((total, quiz) => total + quiz.questions.length, 0);
+
+  document.getElementById("completedCount").textContent = completedCount;
+
+  const grid = document.getElementById("quizGrid");
+
+  if (quizzes.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <h3>No quizzes yet</h3>
+        <p>Create your first quiz to get started.</p>
+        <button class="primary" onclick="startNewQuiz()">Create your first quiz</button>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = quizzes.map(quiz => `
+    <article class="quiz-card">
+      <div class="quiz-meta">${quiz.questions.length} QUESTIONS</div>
+      <h3>${escapeHTML(quiz.title)}</h3>
+      <p>${escapeHTML(quiz.description || "No description provided.")}</p>
+      <div class="card-actions">
+        <button class="primary" onclick="takeQuiz('${quiz.id}')">Take Quiz</button>
+        <button class="secondary" onclick="editQuiz('${quiz.id}')">Edit</button>
+        <button class="danger" onclick="deleteQuiz('${quiz.id}')">Delete</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function startNewQuiz() {
+  document.getElementById("quizForm").reset();
+  document.getElementById("questionEditors").innerHTML = "";
+  editingQuestions = 0;
+  currentQuizId = null;
+  addQuestion();
+  showPage("creator");
+}
+
+function editQuiz(id) {
+  const quiz = quizzes.find(item => item.id === id);
+  if (!quiz) return;
+
+  currentQuizId = id;
+  document.getElementById("quizTitle").value = quiz.title;
+  document.getElementById("quizDescription").value = quiz.description || "";
+  document.getElementById("questionEditors").innerHTML = "";
+  editingQuestions = 0;
+
+  quiz.questions.forEach(question => addQuestion(question));
+  showPage("creator");
+}
+
+function addQuestion(questionData = null) {
+  editingQuestions++;
+
+  const number = editingQuestions;
+  const container = document.createElement("div");
+  container.className = "question-editor";
+  container.dataset.questionNumber = number;
+
+  const question = questionData || {
+    text: "",
+    options: ["", "", "", ""],
+    correct: 0,
+    explanation: ""
+  };
+
+  container.innerHTML = `
+    <div class="section-heading">
+      <h3>Question ${number}</h3>
+      <button type="button" class="danger" onclick="removeQuestion(this)">
+        Remove
+      </button>
+    </div>
+
+    <label>Question text</label>
+    <textarea class="question-text" required maxlength="1000"
+      placeholder="Enter your question...">${escapeHTML(question.text)}</textarea>
+
+    <div class="option-row">
+      ${[0, 1, 2, 3].map(index => `
+        <div>
+          <label>Option ${String.fromCharCode(65 + index)}</label>
+          <input class="question-option" required maxlength="500"
+            value="${escapeHTML(question.options[index] || "")}"
+            placeholder="Answer choice ${String.fromCharCode(65 + index)}">
+        </div>
+      `).join("")}
+    </div>
+
+    <label>Correct answer</label>
+    <select class="correct-answer">
+      ${[0, 1, 2, 3].map(index => `
+        <option value="${index}" ${Number(question.correct) === index ? "selected" : ""}>
+          ${String.fromCharCode(65 + index)}
+        </option>
+      `).join("")}
+    </select>
+
+    <label>Explanation (optional)</label>
+    <textarea class="question-explanation" maxlength="1500"
+      placeholder="Explain why the answer is correct...">${escapeHTML(question.explanation || "")}</textarea>
+  `;
+
+  document.getElementById("questionEditors").appendChild(container);
+}
+
+function removeQuestion(button) {
+  button.closest(".question-editor").remove();
+
+  document.querySelectorAll(".question-editor").forEach((editor, index) => {
+    editor.querySelector("h3").textContent = `Question ${index + 1}`;
+  });
+
+  editingQuestions = document.querySelectorAll(".question-editor").length;
+}
+
+document.getElementById("quizForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const title = document.getElementById("quizTitle").value.trim();
+  const description = document.getElementById("quizDescription").value.trim();
+  const editors = [...document.querySelectorAll(".question-editor")];
+
+  if (!title) {
+    alert("Please enter a quiz title.");
+    return;
+  }
+
+  if (editors.length === 0) {
+    alert("Add at least one question.");
+    return;
+  }
+
+  const questions = editors.map(editor => ({
+    text: editor.querySelector(".question-text").value.trim(),
+    options: [...editor.querySelectorAll(".question-option")]
+      .map(input => input.value.trim()),
+    correct: Number(editor.querySelector(".correct-answer").value),
+    explanation: editor.querySelector(".question-explanation").value.trim()
+  }));
+
+  if (questions.some(question =>
+    !question.text ||
+    question.options.length !== 4 ||
+    question.options.some(option => !option)
+  )) {
+    alert("Complete every question and all four answer choices.");
+    return;
+  }
+
+  if (questions.some(question => question.correct < 0 || question.correct > 3)) {
+    alert("Choose a correct answer for each question.");
+    return;
+  }
+
+  if (currentQuizId) {
+    const existing = quizzes.find(quiz => quiz.id === currentQuizId);
+
+    if (existing) {
+      existing.title = title;
+      existing.description = description;
+      existing.questions = questions;
+    }
+  } else {
+    quizzes.unshift({
+      id: makeId(),
+      title,
+      description,
+      questions,
+      createdAt: new Date().toISOString()
+    });
+  }
+
+  saveQuizzes();
+  updateDashboard();
+  showPage("dashboard");
+});
+
+function deleteQuiz(id) {
+  const quiz = quizzes.find(item => item.id === id);
+  if (!quiz) return;
+
+  if (!confirm(`Delete "${quiz.title}"? This cannot be undone.`)) return;
+
+  quizzes = quizzes.filter(item => item.id !== id);
+  saveQuizzes();
+  updateDashboard();
+}
+
+function takeQuiz(id) {
+  const quiz = quizzes.find(item => item.id === id);
+  if (!quiz) return;
+
+  currentQuizId = id;
+  document.getElementById("takingTitle").textContent = quiz.title;
+  document.getElementById("takingDescription").textContent = quiz.description || "";
+  document.getElementById("quizResult").hidden = true;
+  document.getElementById("quizResult").innerHTML = "";
+
+  document.getElementById("quizQuestions").innerHTML =
+    quiz.questions.map((question, questionIndex) => `
+      <div class="quiz-question">
+        <h3>${questionIndex + 1}. ${escapeHTML(question.text)}</h3>
+
+        ${question.options.map((option, optionIndex) => `
+          <label class="answer-option">
+            <input type="radio"
+              name="question-${questionIndex}"
+              value="${optionIndex}" required>
+            <span>
+              <strong>${String.fromCharCode(65 + optionIndex)}.</strong>
+              ${escapeHTML(option)}
+            </span>
+          </label>
+        `).join("")}
+
+        <div class="feedback" id="feedback-${questionIndex}"></div>
+      </div>
+    `).join("");
+
+  document.getElementById("takingForm").querySelector("button[type=submit]").disabled = false;
+  showPage("taking");
+}
+
+document.getElementById("takingForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const quiz = quizzes.find(item => item.id === currentQuizId);
+  if (!quiz) return;
+
+  let score = 0;
+
+  quiz.questions.forEach((question, index) => {
+    const selected = document.querySelector(
+      `input[name="question-${index}"]:checked`
+    );
+
+    const feedback = document.getElementById(`feedback-${index}`);
+    const correctLetter = String.fromCharCode(65 + question.correct);
+
+    if (selected && Number(selected.value) === question.correct) {
+      score++;
+      feedback.className = "feedback correct";
+      feedback.textContent = "Correct!" +
+        (question.explanation ? " " + question.explanation : "");
+    } else {
+      feedback.className = "feedback incorrect";
+      feedback.textContent =
+        `Correct answer: ${correctLetter}. ${question.options[question.correct]}` +
+        (question.explanation ? " — " + question.explanation : "");
+    }
+  });
+
+  const percentage = Math.round(score / quiz.questions.length * 100);
+
+  completedCount++;
+  saveQuizzes();
+  updateDashboard();
+
+  const result = document.getElementById("quizResult");
+  result.hidden = false;
+  result.innerHTML = `
+    <div class="result">
+      <h2>Quiz complete!</h2>
+      <p>You scored <strong>${score} out of ${quiz.questions.length}</strong>.</p>
+      <p style="font-size:28px;font-weight:800">${percentage}%</p>
+      <p>${percentage >= 80
+        ? "Great work! You have a strong understanding of this material."
+        : percentage >= 50
+          ? "Good effort! Review the explanations to improve your understanding."
+          : "Keep practising. Review the answers and try again."}</p>
+      <button class="primary" onclick="takeQuiz('${quiz.id}')">Try Again</button>
+    </div>`;
+
+  document.getElementById("takingForm").querySelector("button[type=submit]").disabled = true;
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function clearFactCheck() {
+  document.getElementById("factForm").reset();
+  document.getElementById("factReportPanel").hidden = true;
+  document.getElementById("factReport").innerHTML = "";
+  document.getElementById("reportText").value = "";
+}
+
+document.getElementById("factForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const claim = document.getElementById("claim").value.trim();
+  const evidence = document.getElementById("evidence").value.trim();
+  const sourceUrl = document.getElementById("sourceUrl").value.trim();
+  const assessment = document.getElementById("assessment").value;
+
+  if (!claim) {
+    alert("Enter a claim to investigate.");
+    return;
+  }
+
+  let parsedUrl = "";
+
+  if (sourceUrl) {
+    try {
+      const url = new URL(sourceUrl);
+      if (!["http:", "https:"].includes(url.protocol)) {
+        throw new Error("Invalid protocol");
+      }
+      parsedUrl = url.href;
+    } catch (error) {
+      alert("Please enter a valid source URL beginning with https:// or http://.");
+      return;
+    }
+  }
+
+  const report = [
+    "QUIZFORGE FACT-CHECK REPORT",
+    "===========================",
+    "",
+    "Claim: " + claim,
+    "",
+    "Assessment: " + assessment,
+    "",
+    "Evidence and notes:",
+    evidence || "No evidence notes provided.",
+    "",
+    "Source: " + (parsedUrl || "No source URL provided."),
+    "",
+    "Important limitation:",
+    "This assessment was entered by the user and has not been automatically verified by QuizForge.",
+    "Review reliable, independent sources and check the publication date, author, context, and supporting evidence."
+  ].join("\n");
+
+  document.getElementById("factReport").innerHTML = `
+    <div class="status">${escapeHTML(assessment)}</div>
+    <h3>Claim</h3>
+    <p>${escapeHTML(claim)}</p>
+    <h3>Evidence and notes</h3>
+    <p>${escapeHTML(evidence || "No evidence notes provided.")
+      .replace(/\n/g, "<br>")}</p>
+    <h3>Source</h3>
+    ${parsedUrl
+      ? `<p><a href="${escapeHTML(parsedUrl)}" target="_blank"
+           rel="noopener noreferrer">${escapeHTML(parsedUrl)}</a></p>`
+      : "<p>No source URL provided.</p>"}
+    <p class="help">This is a user-recorded assessment, not an automatic verification.</p>
+  `;
+
+  document.getElementById("reportText").value = report;
+  document.getElementById("factReportPanel").hidden = false;
+  document.getElementById("factReportPanel").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+async function copyReport() {
+  const text = document.getElementById("reportText").value;
+  if (!text) return;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Fact-check report copied.");
+  } catch (error) {
+    const textarea = document.getElementById("reportText");
+    textarea.hidden = false;
+    textarea.focus();
+    textarea.select();
+
+    const copied = document.execCommand("copy");
+    textarea.hidden = true;
+
+    alert(copied
+      ? "Fact-check report copied."
+      : "Copy was unavailable. Select and copy the report text manually.");
+  }
+}
+
+updateDashboard();
+</script>
+
+</body>
+</html>
